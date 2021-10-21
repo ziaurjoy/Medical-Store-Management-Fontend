@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import GoogleFontLoader from 'react-google-font-loader';
 
 
-import "../plugins/fontawesome-free/css/all.min.css";
+import "../assets/plugins/fontawesome-free/css/all.min.css";
 //  icheck bootstrap 
-import "../plugins/icheck-bootstrap/icheck-bootstrap.min.css";
+import "../assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css";
 //   Theme style 
-import "..//dist/css/adminlte.min.css";
+// import "../dist/css/adminlte.min.css";
+import "../assets/dist/css/adminlte.min.css";
   
 
-import AuthHandler from '../../utils/AuthHandler';
+import AuthHandler from '../utils/AuthHandler';
+import Config from '../utils/Config';
+import { Redirect } from 'react-router';
 
 
 export default class Login extends Component {
@@ -44,6 +47,7 @@ export default class Login extends Component {
         event.preventDefault();
         console.log(this.state);
         AuthHandler.login(this.state.username, this.state.password, this.handleResponse)
+        
     }
 
 
@@ -51,15 +55,21 @@ export default class Login extends Component {
 // This function working for return data for authHandler request
 
     handleResponse = (data) =>{
-        console.log(data);
-        if(data.errors){
-            this.setState({ loginStatus: 1 });
+        console.log("Hello I am rady");
+        if(data.error){
+            console.log(data.error);
+        }else{
+            window.location = Config.homeUrl;
         }
+       
     }
 
 
 
     render() {
+        if(AuthHandler.loggedIn()){
+            return <Redirect to={Config.homeUrl} />
+        }
         return (
             <React.Fragment>
 
